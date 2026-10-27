@@ -89,7 +89,7 @@ export function MemoryRoom() {
     if(ending==='dark'){const t=setTimeout(()=>setEnding('relight'),1350);return()=>clearTimeout(t);}
     if(ending==='relight'){const t=setTimeout(()=>{state.finish();setEnding('letter');},RELIGHT_DURATION);return()=>clearTimeout(t);}
   },[ending,state.finish]);
-  useEffect(()=>{if(entered&&state.endingUnlocked&&!state.endingSeen&&ending==='idle')say('许个愿吧。');},[entered,state.endingUnlocked,state.endingSeen]);
+  useEffect(()=>{if(entered&&state.endingUnlocked&&!state.endingSeen&&ending==='idle')say('Make a wish.');},[entered,state.endingUnlocked,state.endingSeen]);
   useEffect(()=>{
     if(!entered)return;const fallback=setTimeout(()=>state.unlockEnding(),180000);
     const gentle=setInterval(()=>{if(discoveredCategories(useRoomState.getState().discoveredMemories).length>=3)state.unlockEnding();},90000);
@@ -100,7 +100,7 @@ export function MemoryRoom() {
     const n=window?windowPet:sofaPet;
     if(window)setWindowPet(v=>v+1);else setSofaPet(v=>v+1);
     state.notice(window?'window-cat':'cats');state.discover('cats');roomAudio.foley('cat');setCatOffer(true);
-    const replies=window?['喵？来一起看窗外。','蹭蹭。窗边分你一半。','尾巴说：再摸一下。']:['呼噜噜……','耳朵自动贴到你手心。','好啦，这只手归猫了。'];
+    const replies=window?['Meow? Come watch the world with me.','Purr... There's room for you by the window.','My tail says: one more pet, please.']:['Prrrr...','Those ears were made for your hand.','That's it. Your hand belongs to the cat now.'];
     say(replies[n%replies.length]);
   }
   function openObject(id:ObjectId){
@@ -111,15 +111,15 @@ export function MemoryRoom() {
     if(id==='cats'||id==='window-cat'){petCat(id==='window-cat');return;}
     if(id==='elephant'){
       setElephantPet(n=>n+1);state.discover('elephant');roomAudio.foley('pickup');
-      say(state.endingUnlocked&&!state.endingSeen?'鼻子指了指蛋糕。':elephantPet%2?'它把小照片藏到身后。':'碰一下鼻子。约好了。');
+      say(state.endingUnlocked&&!state.endingSeen?'Its trunk points toward the cake.':elephantPet%2?'It hides a tiny photo behind its back.':'Touch trunks. It's a promise.');
       return;
     }
     if(id==='cake'){
-      if(!state.endingUnlocked){say('还差一点点。去房间里转转？');return;}
+      if(!state.endingUnlocked){say('Almost there. Explore a little more!');return;}
       setFocus(null);setWhisper('');setEnding('wish');return;
     }
     if(id==='drawer'){setFocus('drawer');setDrawerOpen(v=>!v);state.discover('drawer');roomAudio.foley('paper');return;}
-    if(id==='wall-charm'){setCharmPulse(n=>n+1);state.discover('magic');roomAudio.foley('magic');say('星星借你一会儿。');return;}
+    if(id==='wall-charm'){setCharmPulse(n=>n+1);state.discover('magic');roomAudio.foley('magic');say('You shine brighter than you know.');return;}
     if(id==='letter'){setEnding('letter');return;}
     if(id==='camera'){setCameraOpen(true);roomAudio.foley('pickup');return;}
     if(Object.prototype.hasOwnProperty.call(focusBoxes,id)){
@@ -137,7 +137,7 @@ export function MemoryRoom() {
   const light=state.lighting;
   function sceneAction(id:string){
     if(!canExplore)return;
-    if(id==='drawer-star'){setCharmPulse(n=>n+1);state.discover('magic');roomAudio.foley('magic');say('一颗没睡着的星星。');return;}
+    if(id==='drawer-star'){setCharmPulse(n=>n+1);state.discover('magic');roomAudio.foley('magic');say('A little star that's still awake.');return;}
     if(id==='tv-prev'){setTVIndex(i=>(i-1+memories.length)%memories.length);return;}
     if(id==='tv-next'){setTVIndex(i=>advancePhoto(i,memories.length));return;}
     if(id==='tv-pause'){setTVPaused(p=>!p);roomAudio.foley('switch');return;}
@@ -148,25 +148,25 @@ export function MemoryRoom() {
     if(id==='calendar'&&focus==='calendar'){calendarFlip();return;}
     openObject(id as ObjectId);
   }
-  const objectShortcuts:[ObjectId,string][]=[['frames','墙上的相框'],['books','书架'],['sunny','晴天的书签'],['magic','魔杖'],['calls','旧电话'],['tv','电视'],['together','合照册'],['portraits','单人拍立得'],['calendar','翻页台历'],['cats','沙发上的猫'],['window-cat','窗边的猫'],['elephant','小象'],['lamp','落地灯'],['desk-lamp','相框灯'],['camera','拍新照片'],['cake','许愿蛋糕'],['drawer','电话柜的抽屉'],['wall-charm','墙上的星星']];
+  const objectShortcuts:[ObjectId,string][]=[['frames','Wall frames'],['books','Bookshelf'],['sunny','Sunny bookmark'],['magic','Magic wand'],['calls','Old telephone'],['tv','TV'],['together','Photo album'],['portraits','Polaroids'],['calendar','Flip calendar'],['cats','Sofa cat'],['window-cat','Window cat'],['elephant','Little elephant'],['lamp','Floor lamp'],['desk-lamp','Desk lamp'],['camera','Take a photo'],['cake','Birthday cake'],['drawer','Telephone drawer'],['wall-charm','Wall star']];
   return <main style={atmosphereSurfaces[state.atmosphere] as CSSProperties} data-atmosphere={state.atmosphere} data-tone={atmospheres[state.atmosphere].tone} className={`experience is-three-dimensional ${entered?'has-entered':''} ${callOpen?'has-call':''} ${focus?'is-focused':''} ${ending==='wish'?'is-wishing':''} ${ending==='relight'?'is-relighting':''} ${ending==='dark'||ending==='relight'?'is-cinematic':''}`}>
     <RoomBackdrop value={state.atmosphere}/>
     <div className="room-surface" inert={!hydrated||callOpen}>
     <Room3D state={{entered,drawerOpen,charmPulse,blocked:!canExplore,focus,frameIndex,frameFlipped,tvIndex,tvPaused,calendarPage,selectedBook:null,elephantPet,discovered:state.discoveredObjects??[],atmosphere:state.atmosphere,lighting:light,sofaPet,windowPet,count:discoveredCategories(state.discoveredMemories).length,ready:state.endingUnlocked,seen:state.endingSeen,ending,magic,viewReset,dialRequest,savedPhoto}} onObject={sceneAction} onDial={()=>{setCallIndex(n=>(n+1)%callFragments.length);state.discover('calls');roomAudio.foley('pickup');}}/>
     {entered&&!focus&&ending==='idle'&&<header ref={headerRef} className="room-header">
-    <div className="room-title"><h1>生日不打烊</h1></div>
-    <nav className="room-tools" aria-label="小屋工具">
-    <button className="replay-call" aria-label="回听开场电话" title="回听开场电话" onClick={()=>{setWeatherOpen(false);replayCall();}}><Phone size={20}/></button>
+    <div className="room-title"><h1>Birthday Stays Open</h1></div>
+    <nav className="room-tools" aria-label="Room tools">
+    <button className="replay-call" aria-label="Replay the opening call" title="Replay the opening call" onClick={()=>{setWeatherOpen(false);replayCall();}}><Phone size={20}/></button>
     <div className="discovery-journal">
-      <button className="journal-toggle" aria-label="发现手账" title="发现手账" aria-expanded={journalOpen} aria-controls="discovery-pages" onClick={()=>{setWeatherOpen(false);setJournalOpen(v=>!v);}}><NotebookPen size={20}/></button>
-      {journalOpen&&<div className="journal-pages" id="discovery-pages"><p>房间里的物件</p><div className="journal-grid">{objectShortcuts.map(([id,label],i)=>{
+      <button className="journal-toggle" aria-label="Discovery journal" title="Discovery journal" aria-expanded={journalOpen} aria-controls="discovery-pages" onClick={()=>{setWeatherOpen(false);setJournalOpen(v=>!v);}}><NotebookPen size={20}/></button>
+      {journalOpen&&<div className="journal-pages" id="discovery-pages"><p>Things to discover</p><div className="journal-grid">{objectShortcuts.map(([id,label],i)=>{
         const found=hasDiscoveredObject(id,state.discoveredObjects??[],state.discoveredMemories);
-        return <button key={id} className={found?'found':'undiscovered'} aria-label={found?label:`未发现的物件 ${i+1}`} onClick={()=>{setJournalOpen(false);openObject(id);}}><span>{found?label:'???'}</span>{found&&<i aria-hidden="true">✧</i>}</button>;
-      })}</div>{state.endingSeen&&<div className="journal-bottom"><button onClick={()=>{setJournalOpen(false);openObject('letter');}}>小屋来信</button></div>}</div>}
+        return <button key={id} className={found?'found':'undiscovered'} aria-label={found?label:`Undiscovered object ${i+1}`} onClick={()=>{setJournalOpen(false);openObject(id);}}><span>{found?label:'???'}</span>{found&&<i aria-hidden="true">✧</i>}</button>;
+      })}</div>{state.endingSeen&&<div className="journal-bottom"><button onClick={()=>{setJournalOpen(false);openObject('letter');}}>Birthday letter</button></div>}</div>}
     </div>
     <AtmospherePicker value={state.atmosphere} open={weatherOpen} onToggle={()=>{setJournalOpen(false);setWeatherOpen(v=>!v);}} onChange={value=>{state.setAtmosphere(value);setWeatherOpen(false);}}/>
     </nav></header>}
-    {canExplore&&!focus&&<button className="room-reset" aria-label="回到原位" title="回到原位" onClick={()=>{setWeatherOpen(false);setJournalOpen(false);setViewReset(n=>n+1);}}><RotateCcw size={18}/></button>}
+    {canExplore&&!focus&&<button className="room-reset" aria-label="Reset view" title="Reset view" onClick={()=>{setWeatherOpen(false);setJournalOpen(false);setViewReset(n=>n+1);}}><RotateCcw size={18}/></button>}
     <div className="room-vignette"/><div className="room-film-grain" aria-hidden="true"/>
 
     {focus&&<FocusControls kind={focus} onClose={closeFocus} frameIndex={frameIndex} frameFlipped={frameFlipped} onFrameMove={n=>{setFrameIndex(i=>(i+n+2)%2);setFrameFlipped(false);roomAudio.foley('paper');}} onFrameFlip={frameFlip} selectedBook={null} onBookSelect={()=>{}} onDial={()=>setDialRequest(n=>n+1)} onBookMemory={isMagic=>setMemory(isMagic?'magic':'sunny')} callIndex={callIndex} calendarPage={calendarPage} onCalendarFlip={calendarFlip} tvIndex={tvIndex} tvPaused={tvPaused} onTVPause={()=>setTVPaused(p=>!p)} onTVNext={()=>setTVIndex(i=>advancePhoto(i,memories.length))} onWindowCat={()=>petCat(true)} drawerOpen={drawerOpen} onDrawerToggle={()=>setDrawerOpen(v=>!v)} onDrawerMagic={()=>sceneAction('drawer-star')}/>}
@@ -174,11 +174,11 @@ export function MemoryRoom() {
     {catOffer&&!memory&&!focus&&ending==='idle'&&<button className="cat-photos-link" onClick={()=>{setMemory('cats');setCatOffer(false);setWhisper('');}}>many cats ↗</button>}
     {magic&&<button className="nox-button" onClick={()=>setMagic(false)}>Nox</button>}
     <MemoryViewer kind={memory} onClose={()=>setMemory(null)} onMagic={()=>{setFocus(null);setMagic(true);state.discover('magic');state.setLighting({floor:100,desk:85,window:65});roomAudio.foley('magic');}}/>
-    <BirthdayEnding phase={ending} onBlow={()=>{state.setAtmosphere('night');setEnding('dark');}} onClose={()=>{const letter=ending==='letter';setEnding('idle');if(letter)say('今天，也留一张吧。');}} season={birthday.season}/>
+    <BirthdayEnding phase={ending} onBlow={()=>{state.setAtmosphere('night');setEnding('dark');}} onClose={()=>{const letter=ending==='letter';setEnding('idle');if(letter)say('Let's capture a memory.');}} season={birthday.season}/>
     <BirthdayCamera open={cameraOpen} onClose={()=>setCameraOpen(false)} onKept={()=>{setPhotoRevision(n=>n+1);state.discover('film');}} season={birthday.season}/>
 
     </div>
-    <button className="sound-control" aria-label={state.audioMuted?'开启声音':'静音'} aria-pressed={!state.audioMuted} onClick={()=>{roomAudio.engage();state.toggleMuted();}}>{state.audioMuted?<VolumeX size={19}/>:<Volume2 size={19}/>}<span>{state.audioMuted?'SOUND OFF':'SOUND ON'}</span></button>
+    <button className="sound-control" aria-label={state.audioMuted?'Turn sound on':'Mute'} aria-pressed={!state.audioMuted} onClick={()=>{roomAudio.engage();state.toggleMuted();}}>{state.audioMuted?<VolumeX size={19}/>:<Volume2 size={19}/>}<span>{state.audioMuted?'SOUND OFF':'SOUND ON'}</span></button>
     {hydrated&&callOpen&&<IncomingCall replaying={replaying} phase={callPhase} seconds={callSeconds} muted={state.audioMuted} onAnswer={answer} onContinue={finishCall}/>}
   </main>;
 }
