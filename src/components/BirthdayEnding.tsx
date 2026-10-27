@@ -11,24 +11,24 @@ export function BirthdayEnding({ phase, onBlow, onClose, season }: { phase: Endi
   return <>
     <Dialog open={phase === 'wish'} onOpenChange={open => { if (!open) onClose(); }}>
       <DialogContent className="memory-dialog wish-dialog" showCloseButton={false}>
-        <button className="close-object" onClick={onClose} aria-label="先回房间"><X size={21} /></button>
-        <DialogTitle className="wish-title">许个愿吧。</DialogTitle>
-        <DialogDescription className="sr-only">轻触蜡烛，或者吹一口气。</DialogDescription>
+        <button className="close-object" onClick={onClose} aria-label="Back to the room"><X size={21} /></button>
+        <DialogTitle className="wish-title">Make a wish.</DialogTitle>
+        <DialogDescription className="sr-only">Tap the candle or blow it out.</DialogDescription>
         {phase === 'wish' && <WishCandle onBlow={onBlow} />}
       </DialogContent>
     </Dialog>
     {phase === 'dark' && <div className="birthday-darkness" />}
     <Dialog open={phase === 'letter'} onOpenChange={open => { if (!open) onClose(); }}>
       <DialogContent className="memory-dialog letter-dialog" showCloseButton={false}>
-        <button className="close-object" onClick={onClose} aria-label="收好这封信"><X size={21} /></button>
-        <DialogTitle className="sr-only">小屋写给来访者的信</DialogTitle>
-        <DialogDescription className="sr-only">一封写给你的小屋来信。</DialogDescription>
+        <button className="close-object" onClick={onClose} aria-label="Keep this letter"><X size={21} /></button>
+        <DialogTitle className="sr-only">A birthday letter for Miranda</DialogTitle>
+        <DialogDescription className="sr-only">A special birthday letter, just for you.</DialogDescription>
         <article className="birthday-letter">
           <div className="letter-heading"><span>A NOTE FOR YOU</span><span>A LITTLE ROOM</span></div>
           <div className="letter-body">{birthdayLetter.map((line, i) => <p key={i}>{line}</p>)}</div>
-          <p className="letter-signature">象象</p>
-          <div className="letter-ending"><h2>Have a lovely day.</h2><p>愿你今天有一点开心。</p><span>ONE SMALL WISH</span><em>To be continued.</em></div>
-          <button className="paper-action" onClick={onClose}>把信收好<ArrowRight size={16} /></button>
+          <p className="letter-signature">Claire</p>
+          <div className="letter-ending"><h2>Happy Birthday, Miranda!</h2><p>You deserve all the happiness in the world.</p><span>ONE SMALL WISH</span><em>To be continued.</em></div>
+          <button className="paper-action" onClick={onClose}>Keep this letter<ArrowRight size={16} /></button>
         </article>
       </DialogContent>
     </Dialog>
@@ -88,12 +88,12 @@ function WishCandle({ onBlow }: { onBlow: () => void }) {
     } catch { stop(); if (active.current && id === requestId.current) setMicState('fallback'); }
   }
   return <div className="wish-candle">
-    <button className="cake-closeup" onClick={blow} aria-label="轻触烛火，吹灭蜡烛">
+    <button className="cake-closeup" onClick={blow} aria-label="Tap the flame to blow out the candle">
 
     </button>
     <div className="wish-actions">
-      <button className="text-action" onClick={listen} disabled={micState === 'waiting' || micState === 'listening'}><Mic size={15} />{micState === 'waiting' ? '等麦克风准备好…' : micState === 'listening' ? '轻轻吹一口气。' : '对着麦克风轻吹'}</button>
-      <button className="tap-to-blow" onClick={blow}>{micState === 'fallback' ? '没关系，轻触烛火也一样。' : '也可以轻触烛火'}</button>
+      <button className="text-action" onClick={listen} disabled={micState === 'waiting' || micState === 'listening'}><Mic size={15} />{micState === 'waiting' ? 'Getting the microphone ready...' : micState === 'listening' ? 'Give it a gentle blow.' : 'Blow gently into the microphone'}</button>
+      <button className="tap-to-blow" onClick={blow}>{micState === 'fallback' ? 'No worries! You can tap the flame instead.' : 'Or tap the flame'}</button>
     </div>
   </div>;
 }
