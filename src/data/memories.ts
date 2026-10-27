@@ -21,11 +21,11 @@ export {albums} from './photo-collections';
 export const callFragments=[
  {time:'Ring 01',line:"Hello? You've reached the Claire Hotline.",aside:''},
  {time:'Ring 02',line:"The clouds look like little pieces of toast today.",aside:''},
- {time:'Ring 03',line:"The cat says it's busy.\\nBusy doing absolutely nothing.",aside:''},
- {time:'Ring 04',line:"The kettle's ready.\\nMake yourself a nice cup of tea.",aside:''},
- {time:'Ring 05',line:"If you're not sure what to do,\\njust look out the window for a while.",aside:''},
- {time:'Ring 06',line:"Wish received.\\nSomething wonderful is starting to grow.",aside:''},
- {time:'Ring 07',line:"Now go give the cat some love.\\nIt's waiting for you.",aside:''},
+ {time:'Ring 03',line:"The cat says it's busy.\nBusy doing absolutely nothing.",aside:''},
+ {time:'Ring 04',line:"The kettle's ready.\nMake yourself a nice cup of tea.",aside:''},
+ {time:'Ring 05',line:"If you're not sure what to do,\njust look out the window for a while.",aside:''},
+ {time:'Ring 06',line:"Wish received.\nSomething wonderful is starting to grow.",aside:''},
+ {time:'Ring 07',line:"Now go give the cat some love.\nIt's waiting for you.",aside:''},
 ];
 export const birthdayLetter=[
  "Dear Miranda,",
