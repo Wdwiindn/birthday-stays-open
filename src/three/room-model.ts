@@ -74,7 +74,7 @@ export function createRoomModel(scene:T.Scene){
   box(3.55,.12,.34,windowWood,[2.45,1.82,-3.35],windowGroup);box(3.55,.12,.25,windowWood,[2.45,4.02,-3.35],windowGroup);
   for(const x of [.73,2.45,4.17])box(.09,2.2,.24,windowWood,[x,2.92,-3.36],windowGroup,.01);
   for(const y of [2.87])box(3.4,.055,.16,windowWood,[2.45,y,-3.29],windowGroup,.005);
-  box(3.8,.12,.96,wood,[2.45,1.78,-3.05],windowGroup);tag(windowGroup,'window','看看窗外');
+  box(3.8,.12,.96,wood,[2.45,1.78,-3.05],windowGroup);tag(windowGroup,'window','Look outside');
   const glass=mesh(new T.PlaneGeometry(3.4,2.2),new T.MeshPhysicalMaterial({color:'#406b97',transparent:true,opacity:.17,roughness:.15,metalness:.1}),windowGroup);glass.position.set(2.45,2.92,-3.49);glass.castShadow=false;
   const night=new T.MeshBasicMaterial({color:'#223347'});const view=mesh(new T.PlaneGeometry(6.8,4.4),night);view.position.set(2.45,2.92,-4.78);view.castShadow=false;
   const building=mat('#263846'),windowGlow=new T.MeshBasicMaterial({color:'#bea276'});
@@ -107,7 +107,7 @@ export function createRoomModel(scene:T.Scene){
   const pillow2=box(.58,.55,.2,mat('#414d42'),[1.7,1.35,-2.27],group,.15);pillow2.rotation.z=-.25;
   const piping=mat('#ae7b57',1);
   for(const x of [-1.48,0,1.48])tube([[x-.61,1.064,-2.34],[x+.61,1.064,-2.34],[x+.66,1.064,-1.14],[x-.66,1.064,-1.14],[x-.61,1.064,-2.34]],.009,piping);
-  tag(pillow,'cushion','拍拍靠垫');tag(pillow2,'cushion','拍拍靠垫');
+  tag(pillow,'cushion','Pat the cushion');tag(pillow2,'cushion','Pat the cushion');
   // Bookcase and real editable title spines.
   const shelf=new T.Group();shelf.position.set(-3.06,0,-3.03);group.add(shelf);
   box(1.86,3.82,.15,woodDark,[0,1.91,-.18],shelf);
@@ -118,7 +118,7 @@ export function createRoomModel(scene:T.Scene){
     ctx.strokeStyle='#d1b27a';ctx.lineWidth=spine?3:4;ctx.strokeRect(18,26,(spine?256:768)-36,972);ctx.strokeRect(25,35,(spine?256:768)-50,954);ctx.fillStyle='#eee0bd';ctx.textAlign='center';ctx.textBaseline='middle';
     if(spine){ctx.font='26px "Room Hand","Songti SC",serif';ctx.fillText(book.family==='magic'?'HARRY POTTER':'LITTLE LIBRARY',128,93,205);ctx.fillRect(40,144,176,2);
       const chars=Array.from(book.spine),step=Math.min(83,650/chars.length);ctx.font=`${Math.min(63,step*.83)}px "Room Hand","Songti SC",serif`;chars.forEach((ch,i)=>ctx.fillText(ch,128,500+(i-(chars.length-1)/2)*step));ctx.fillRect(40,863,176,2);ctx.font='38px Georgia';ctx.fillText(book.volume||'·',128,924);
-    }else{ctx.font='24px Georgia';ctx.fillText(book.family==='magic'?'THE HARRY POTTER COLLECTION':'THE LITTLE LIBRARY',384,137);ctx.font='50px "Room Hand","Songti SC",serif';const title=book.title.replace('哈利·波特与','');if(book.family==='magic'){ctx.font='57px "Room Hand","Songti SC",serif';ctx.fillText('哈利·波特',384,320);ctx.font='46px "Room Hand","Songti SC",serif';}const lines=title.match(/.{1,6}/g)??[];lines.forEach((line,i)=>ctx.fillText(line,384,434+i*67));ctx.beginPath();ctx.arc(384,716,76,0,Math.PI*2);ctx.stroke();ctx.font='53px Georgia';ctx.fillText(book.volume||'DOODLE',384,720);ctx.font='28px "Room Hand","Songti SC",serif';ctx.fillText(book.author,384,884,630);}
+    }else{ctx.font='24px Georgia';ctx.fillText(book.family==='magic'?'THE HARRY POTTER COLLECTION':'THE LITTLE LIBRARY',384,137);ctx.font='50px "Room Hand","Songti SC",serif';const title=book.title.replace('','');if(book.family==='magic'){ctx.font='57px "Room Hand","Songti SC",serif';ctx.fillText('Harry Potter',384,320);ctx.font='46px "Room Hand","Songti SC",serif';}const lines=title.match(/.{1,6}/g)??[];lines.forEach((line,i)=>ctx.fillText(line,384,434+i*67));ctx.beginPath();ctx.arc(384,716,76,0,Math.PI*2);ctx.stroke();ctx.font='53px Georgia';ctx.fillText(book.volume||'DOODLE',384,720);ctx.font='28px "Room Hand","Songti SC",serif';ctx.fillText(book.author,384,884,630);}
     const tex=new T.CanvasTexture(c);tex.colorSpace=T.SRGBColorSpace;tex.anisotropy=4;ownedTextures.add(tex);return tex;
   }
   const bookOrigins=new Map<string,T.Vector3>();
@@ -137,18 +137,18 @@ export function createRoomModel(scene:T.Scene){
   const dustGeometry=new T.BufferGeometry();dustGeometry.setAttribute('position',new T.BufferAttribute(dustPositions,3));const bookDust=new T.Points(dustGeometry,new T.PointsMaterial({color:'#d9bb75',size:.012,transparent:true,opacity:.5,depthWrite:false}));bookDust.position.set(-3.06,2.4,-2.56);group.add(bookDust);
   for(let i=0;i<8;i++){const b=box(.16,.55+(i%3)*.1,.5,mat(['#6b4832','#465547','#8a764a'][i%3]),[-.76+i*.2,.44+(i%3)*.05,.09],shelf,.014);b.rotation.z=i===7?-.12:0;}
   const bookmark=box(.18,.29,.009,paper,[-.75,1.21,.45],shelf,.012);bookmark.rotation.z=-.13;
-  const markFace=texturePlane(.15,.24,textTexture(['TODAY','☀'],256,384,'#e5cda3','#716141',63),[-.75,1.21,.458],shelf);markFace.rotation.z=-.13;tag(bookmark,'sunny','夹在书里的晴天');tag(markFace,'sunny','夹在书里的晴天');
+  const markFace=texturePlane(.15,.24,textTexture(['TODAY','☀'],256,384,'#e5cda3','#716141',63),[-.75,1.21,.458],shelf);markFace.rotation.z=-.13;tag(bookmark,'sunny','Sunshine between the pages');tag(markFace,'sunny','Sunshine between the pages');
   const wand=new T.Group();wand.position.set(.46,1.79,.53);wand.rotation.z=-.38;shelf.add(wand);
   tube([[0,0,0],[.07,.18,0],[.11,.37,0]],.014,gold,wand);ball(.028,cream,[.11,.37,0],[1,1,1],wand);tag(wand,'magic','Lumos');
-  tag(shelf,'books','走近书架');
+  tag(shelf,'books','Explore the bookshelf');
   // Wall frame with two-sided photograph inside the moulding.
   const frame=new T.Group();frame.position.set(-4.94,2.65,-1.5);frame.rotation.y=Math.PI/2;group.add(frame);
   mesh(roundedSurface(.96,1.25,.09,.09),woodDark,frame);
   const frameRim=mesh(roundedSurface(1.05,1.34,.13,.1,[{width:.84,height:1.12,x:0,y:0,radius:.055}]),gold,frame);frameRim.position.z=.025;
   const frameTurner=new T.Group();frameTurner.position.z=.1;frame.add(frameTurner);
   const frameMat=new T.MeshStandardMaterial({color:'#ffffff',roughness:.7});const frameFront=mesh(roundedPanel(.82,1.1,.045),frameMat,frameTurner);frameFront.position.z=.004;
-  const frameBackMat=new T.MeshStandardMaterial({map:textTexture([...(photo(1).backText.match(/.{1,12}/g)??[]),'','小屋 ♡'],512,700,'#dac79b','#483424',35),roughness:.9});const frameBack=mesh(roundedPanel(.82,1.1,.045),frameBackMat,frameTurner);frameBack.rotation.y=Math.PI;frameBack.position.z=-.004;
-  updatePhoto(frameMat,0,.82/1.1);tag(frame,'frames','相框里的合照');
+  const frameBackMat=new T.MeshStandardMaterial({map:textTexture([...(photo(1).backText.match(/.{1,12}/g)??[]),'','Claire ♡'],512,700,'#dac79b','#483424',35),roughness:.9});const frameBack=mesh(roundedPanel(.82,1.1,.045),frameBackMat,frameTurner);frameBack.rotation.y=Math.PI;frameBack.position.z=-.004;
+  updatePhoto(frameMat,0,.82/1.1);tag(frame,'frames','Friends in the frame');
   // Desk and rotary phone.
   const desk=new T.Group();desk.position.set(-3.65,0,-.62);group.add(desk);
   slab(1.42,.12,1.0,wood,[0,1.01,0],desk,.14);
@@ -156,7 +156,7 @@ export function createRoomModel(scene:T.Scene){
   box(1.29,.43,.85,wood,[0,.47,-.01],desk,.05);
   for(const x of [-.61,.61])box(.07,.29,.85,wood,[x,.81,-.01],desk,.018);
   box(1.2,.28,.055,woodDark,[0,.81,-.41],desk,.015);
-  const drawer=new T.Group();desk.add(drawer);tag(drawer,'drawer','拉开电话柜的抽屉');
+  const drawer=new T.Group();desk.add(drawer);tag(drawer,'drawer','Open the telephone drawer');
   box(1.16,.22,.06,olive,[0,.83,.445],drawer,.025);
   ball(.032,gold,[0,.83,.488],[1,1,1],drawer);
   box(1.08,.035,.68,wood,[0,.72,.07],drawer,.015);
@@ -164,7 +164,7 @@ export function createRoomModel(scene:T.Scene){
   box(1.05,.17,.033,wood,[0,.805,-.25],drawer,.01);
   for(const x of [-.569,.569])box(.014,.025,.59,gold,[x,.748,-.065],desk,.005);
   const ticket=texturePlane(.58,.26,textTexture(['9¾','ANYWHERE · TOGETHER'],512,256,'#d5b68b','#65452f',51),[-.13,.749,.11],drawer);ticket.rotation.x=-Math.PI/2;ticket.rotation.z=-.13;
-  const drawerStar=new T.Group();drawerStar.position.set(.32,.775,.17);drawer.add(drawerStar);tag(drawerStar,'drawer-star','碰一下抽屉里的星星');
+  const drawerStar=new T.Group();drawerStar.position.set(.32,.775,.17);drawer.add(drawerStar);tag(drawerStar,'drawer-star','Touch the star in the drawer');
   const starShape=new T.Shape();for(let i=0;i<10;i++){const a=i*Math.PI/5+Math.PI/2,r=i%2?.037:.085;const x=Math.cos(a)*r,y=Math.sin(a)*r;if(i)starShape.lineTo(x,y);else starShape.moveTo(x,y);}starShape.closePath();
   mesh(new T.ExtrudeGeometry(starShape,{depth:.018,bevelEnabled:true,bevelSegments:2,steps:1,bevelSize:.006,bevelThickness:.004}),gold,drawerStar).rotation.x=-Math.PI/2;
   for(const x of [-.55,.55])for(const z of [-.33,.33])cylinder(.05,.036,.26,woodDark,[x,.14,z],desk);
@@ -178,20 +178,20 @@ export function createRoomModel(scene:T.Scene){
   const dialFace=mesh(new T.RingGeometry(.087,.19,48),gold,dial);dialFace.position.z=.02;
   for(let i=0;i<10;i++){const a=(i*28+30)*Math.PI/180,x=.146*Math.cos(a),y=.146*Math.sin(a);const hole=mesh(new T.CircleGeometry(.026,16),black,dial);hole.position.set(x,y,.025);const tex=textTexture([String((i+1)%10)],96,96,'#302718','#f0d49c',68);texturePlane(.027,.027,tex,[x,y,.028],dial,true);}
   texturePlane(.104,.104,textTexture(['hi!'],128,128,'#c5a66c','#503b28',56),[0,0,.027],dialMount);
-  tag(dialMount,'dial','拨动电话，听下一条消息');tag(phone,'calls','走近旧电话');
+  tag(dialMount,'dial','Dial for another message');tag(phone,'calls','Pick up the old telephone');
   const cord:T.Vector3[]=[];for(let i=0;i<130;i++){const u=i/129;cord.push(new T.Vector3(-.43+Math.cos(u*50)*.03,.39-u*.29,-.12+Math.sin(u*50)*.025));}mesh(new T.TubeGeometry(new T.CatmullRomCurve3(cord),150,.008,5,false),black,phone);
   // Desk lamp and floor lamp, with actual light sources.
   const deskLamp=new T.Group();deskLamp.position.set(-4.8,3.43,-1.5);deskLamp.rotation.y=Math.PI/2;group.add(deskLamp);
   box(.17,.15,.025,gold,[0,0,0],deskLamp,.025);tube([[0,0,0],[0,.08,.21],[0,.01,.34]],.018,gold,deskLamp);
   const pictureBar=cylinder(.046,.046,.86,gold,[0,.015,.34],deskLamp);pictureBar.rotation.z=Math.PI/2;
   const pictureBulb=box(.77,.021,.038,new T.MeshBasicMaterial({color:'#ffe2a9'}),[0,-.025,.34],deskLamp,.008);pictureBulb.castShadow=false;
-  tag(deskLamp,'desk-lamp','开关相框灯');
+  tag(deskLamp,'desk-lamp','Toggle the desk lamp');
   const deskLight=new T.SpotLight('#ffd59a',13,4,.7,.8,1.3);deskLight.position.set(-4.46,3.36,-1.5);deskLight.target.position.set(-4.9,2.48,-1.5);group.add(deskLight,deskLight.target);
   const lamp=new T.Group();lamp.position.set(4.26,0,-2.16);group.add(lamp);
   cylinder(.36,.43,.09,gold,[0,.08,0],lamp);cylinder(.029,.045,2.17,gold,[0,1.18,0],lamp);
   const shadeMat=new T.MeshStandardMaterial({color:'#eed1a0',emissive:'#e4a451',emissiveIntensity:.55,roughness:.95,side:T.DoubleSide});
   const shadeGeometry=new T.CylinderGeometry(.27,.49,.72,64,1,true);const vertices=shadeGeometry.attributes.position;for(let i=0;i<vertices.count;i++){const x=vertices.getX(i),z=vertices.getZ(i),angle=Math.atan2(z,x),factor=1+Math.cos(angle*32)*.025;vertices.setXYZ(i,x*factor,vertices.getY(i),z*factor);}shadeGeometry.computeVertexNormals();const shade=mesh(shadeGeometry,shadeMat,lamp);shade.position.y=2.47;
-  tag(lamp,'lamp','开关落地灯');const floorLight=new T.PointLight('#ffc27e',38,10,2);floorLight.position.set(4.26,2.32,-2.16);floorLight.castShadow=false;floorLight.shadow.mapSize.set(1024,1024);floorLight.shadow.bias=-.002;group.add(floorLight);
+  tag(lamp,'lamp','Toggle the floor lamp');const floorLight=new T.PointLight('#ffc27e',38,10,2);floorLight.position.set(4.26,2.32,-2.16);floorLight.castShadow=false;floorLight.shadow.mapSize.set(1024,1024);floorLight.shadow.bias=-.002;group.add(floorLight);
   // Coffee table and separated keepsakes.
   const table=new T.Group();table.position.set(0,0,1.68);group.add(table);
   slab(4.3,.17,1.78,wood,[0,.8,0],table,.22);for(const x of [-1.84,1.84])for(const z of [-.6,.6]){const leg=box(.12,.73,.14,woodDark,[x,.4,z],table,.035);leg.rotation.z=x>0?-.06:.06;}
@@ -203,15 +203,15 @@ export function createRoomModel(scene:T.Scene){
   for(let i=0;i<5;i++){const a=i*Math.PI*2/5;for(let n=0;n<5;n++){const t=n*1.24;ball(.005,mat('#e9bb79'),[.34*Math.cos(a)+.035*Math.cos(t),.598,.34*Math.sin(a)+.035*Math.sin(t)],[1,.45,1],cake);}}
   const flames:T.Mesh[]=[];for(const x of [-.13,.13]){cylinder(.018,.018,.48,paper,[x,.75,0],cake);const flame=ball(.042,new T.MeshBasicMaterial({color:'#ffd985'}),[x,1.025,0],[.5,1.8,.5],cake);flame.castShadow=false;flames.push(flame);}
   const toppers=addCakeToppers({box,ball,tube,mesh,mat},cake);
-  const candleLight=new T.PointLight('#ffa24a',2.8,3.4,2);candleLight.position.set(0,1.8,2.1);group.add(candleLight);tag(cake,'cake','许愿蛋糕');
+  const candleLight=new T.PointLight('#ffa24a',2.8,3.4,2);candleLight.position.set(0,1.8,2.1);group.add(candleLight);tag(cake,'cake','Birthday cake');
   function polaroid(index:number,pos:Vec3,rot:number,id:string,label:string){const p=new T.Group();p.position.set(...pos);p.rotation.set(-Math.PI/2,0,rot);table.add(p);mesh(roundedSurface(.62,.78,.015,.035),paper,p);const pm=new T.MeshStandardMaterial({color:'#fff'});const image=mesh(roundedPanel(.53,.54,.018),pm,p);image.position.set(0,.045,.014);updatePhoto(pm,index-1,.53/.54);tag(p,id,label);return {group:p,material:pm};}
-  polaroid(5,[-1.15,.907,.39],-.18,'portraits','桌上的单人拍立得');polaroid(6,[-.63,.91,.47],.18,'portraits','桌上的单人拍立得');
-  const savedPrint=polaroid(5,[.66,.917,.47],-.08,'camera','刚拍下的小屋照片');savedPrint.group.visible=false;
-  const album=new T.Group();album.position.set(-1.55,.99,-.4);album.rotation.y=-.1;table.add(album);box(.68,.14,.82,mat('#4b5a48'),[0,0,0],album);const cover=texturePlane(.48,.58,textTexture(['US','IN THE SAME FRAME'],256,320,'#405140','#dfc697',30),[0,.076,0],album);cover.rotation.x=-Math.PI/2;tag(album,'together','合照册');
+  polaroid(5,[-1.15,.907,.39],-.18,'portraits','Polaroids on the desk');polaroid(6,[-.63,.91,.47],.18,'portraits','Polaroids on the desk');
+  const savedPrint=polaroid(5,[.66,.917,.47],-.08,'camera','A new photo from the room');savedPrint.group.visible=false;
+  const album=new T.Group();album.position.set(-1.55,.99,-.4);album.rotation.y=-.1;table.add(album);box(.68,.14,.82,mat('#4b5a48'),[0,0,0],album);const cover=texturePlane(.48,.58,textTexture(['US','IN THE SAME FRAME'],256,320,'#405140','#dfc697',30),[0,.076,0],album);cover.rotation.x=-Math.PI/2;tag(album,'together','Our Photo Album');
   const mug=new T.Group();mug.position.set(-.94,1.05,-.52);table.add(mug);cylinder(.12,.1,.3,mat('#8c744e',.4),[0,.02,0],mug);const handle=mesh(new T.TorusGeometry(.1,.025,8,20),gold,mug);handle.position.set(.13,.03,0);cylinder(.104,.104,.007,woodDark,[0,.175,0],mug);
   cylinder(.19,.17,.016,cream,[-.94,.911,-.52],table);
   const latteMat=mat('#dcc59a',1);for(const x of [-.023,.023])ball(.028,latteMat,[x,.18,.005],[1,.12,1],mug);const latteTip=mesh(new T.ConeGeometry(.042,.059,3),latteMat,mug);latteTip.rotation.x=Math.PI/2;latteTip.position.set(0,.18,.035);
-  tag(mug,'mug','碰一碰咖啡杯');const steam=new T.Group();mug.add(steam);for(let i=0;i<3;i++){const vapor=tube([[i*.07-.07,.23,0],[i*.07-.09,.37,.01],[i*.07-.06,.51,0]],.005,new T.MeshBasicMaterial({color:'#ded0b4',transparent:true,opacity:.2}),steam);vapor.castShadow=false;}
+  tag(mug,'mug','Touch the coffee cup');const steam=new T.Group();mug.add(steam);for(let i=0;i<3;i++){const vapor=tube([[i*.07-.07,.23,0],[i*.07-.09,.37,.01],[i*.07-.06,.51,0]],.005,new T.MeshBasicMaterial({color:'#ded0b4',transparent:true,opacity:.2}),steam);vapor.castShadow=false;}
   const cameraProp=new T.Group();cameraProp.position.set(1.18,1.04,-.27);cameraProp.rotation.y=-.12;table.add(cameraProp);box(.56,.32,.24,black,[0,0,0],cameraProp,.04);box(.23,.12,.2,gold,[0,.18,-.01],cameraProp,.02);const lens=cylinder(.127,.127,.18,black,[0,-.01,.17],cameraProp);lens.rotation.x=Math.PI/2;const glassLens=cylinder(.095,.095,.007,mat('#253d44',.15,.55),[0,-.01,.27],cameraProp);glassLens.rotation.x=Math.PI/2;tag(cameraProp,'camera','拍一张新的小屋照片');
   for(let i=0;i<22;i++){const a=i*Math.PI/11;box(.012,.012,.1,gold,[.12*Math.cos(a),-.01+.12*Math.sin(a),.19],cameraProp,.004);}texturePlane(.22,.035,textTexture(['DOODLE · 35'],256,64,'#20271f','#cfb686',30),[-.15,.06,.127],cameraProp);tube([[-.28,.1,0],[-.37,-.09,-.12],[-.12,-.25,-.16],[.3,.1,0]],.017,woodDark,cameraProp);
   const calendar=new T.Group();calendar.position.set(1.65,.92,.36);calendar.rotation.x=-.16;table.add(calendar);box(.62,.04,.48,wood,[0,0,-.03],calendar);const stand=box(.57,.72,.04,wood,[0,.35,-.14],calendar);stand.rotation.x=.3;
@@ -229,7 +229,7 @@ export function createRoomModel(scene:T.Scene){
   const leafGeometry=new T.PlaneGeometry(.56,.66,8,24);leafGeometry.translate(0,-.33,0);
   const calendarLeaf=mesh(leafGeometry,calendarMat,calendarPivot);calendarLeaf.position.z=.014;
   const calendarBack=mesh(leafGeometry.clone(),new T.MeshStandardMaterial({map:textTexture(['A LITTLE','NEW DAY'],512,650,'#e9d9b7','#938064',45),roughness:1,side:T.BackSide}),calendarPivot);calendarBack.position.z=.012;calendarLeaf.userData.deforming=true;calendarBack.userData.deforming=true;
-  for(let i=0;i<7;i++){const ring=mesh(new T.TorusGeometry(.029,.005,8,20),gold,calendar);ring.rotation.y=Math.PI/2;ring.position.set(-.24+i*.08,.705,.0);}tag(calendar,'calendar','翻页');
+  for(let i=0;i<7;i++){const ring=mesh(new T.TorusGeometry(.029,.005,8,20),gold,calendar);ring.rotation.y=Math.PI/2;ring.position.set(-.24+i*.08,.705,.0);}tag(calendar,'calendar','Flip the page');
   // CRT: a real cabinet, feet, convex glass and independently updating screen.
   const tv=new T.Group();tv.position.set(-3.55,.1,2.12);tv.rotation.y=1.12;group.add(tv);
   box(1.94,1.45,1.05,wood,[0,.85,0],tv,.11);box(1.79,1.27,.06,black,[0,.86,.545],tv,.08);
@@ -242,11 +242,11 @@ export function createRoomModel(scene:T.Scene){
       control.add(tvPlay,tvPause);for(const x of [-.019,.019])box(.012,.057,.009,black,[x,0,.035],tvPause,.004);
       const arrow=new T.Shape();arrow.moveTo(-.022,-.033);arrow.lineTo(.029,0);arrow.lineTo(-.022,.033);arrow.closePath();const glyph=mesh(new T.ShapeGeometry(arrow),black,tvPlay);glyph.position.z=.035;tvPlay.visible=false;
     }else{const direction=id==='tv-prev'?-1:1;tube([[-direction*.018,.031,.036],[direction*.019,0,.036],[-direction*.018,-.031,.036]],.006,black,control);}
-    tag(control,id,['上一张','暂停 / 播放','下一张'][i]);tvButtons.set(id,control);
+    tag(control,id,['Previous','Pause / Play','Next'][i]);tvButtons.set(id,control);
   }
   for(let i=0;i<5;i++)box(.23,.012,.018,gold,[.65,.42-i*.039,.586],tv,.004);
   for(const x of [-.65,.65])for(const z of [-.34,.34]){const leg=box(.07,.25,.07,woodDark,[x,.06,z],tv);leg.rotation.z=x>0?-.2:.2;}
-  tag(tv,'tv','走近正在播放照片的电视');
+  tag(tv,'tv','Watch the TV slideshow');
   // Plants and side table give the room volume from the side as well.
   const sideTable=new T.Group();sideTable.position.set(3.53,0,-.82);group.add(sideTable);
   cylinder(.5,.5,.11,wood,[0,.79,0],sideTable);cylinder(.065,.11,.7,gold,[0,.38,0],sideTable);cylinder(.31,.37,.065,woodDark,[0,.07,0],sideTable);
@@ -254,27 +254,27 @@ export function createRoomModel(scene:T.Scene){
   const fabric=mat('#596153',1);fabric.bumpMap=grains.cloth;fabric.bumpScale=.024;
   box(1.17,.24,1.16,fabric,[0,.63,0],chair,.14);const chairBack=box(1.15,.96,.25,fabric,[0,1.01,-.5],chair,.16);chairBack.rotation.x=-.1;
   for(const x of [-.59,.59]){box(.17,.15,1.05,wood,[x,.86,-.01],chair,.065);for(const z of [-.43,.43])box(.065,.7,.065,wood,[x,.42,z],chair,.018);}
-  tag(chair,'cushion','坐一会儿');
+  tag(chair,'cushion','Take a seat');
   const craft={group,ownedTextures,mesh,ball,cylinder,tube,mat,tag};
   const flowers=[createTulips(craft,[4.48,.075,-.05],1.05),createTulips(craft,[-3.87,1.08,-.98],.52)];
   const stool=new T.Group();stool.position.set(2.66,0,.08);group.add(stool);cylinder(.37,.36,.16,fabric,[0,.44,0],stool);for(const x of [-.23,.23])for(const z of [-.23,.23])cylinder(.035,.028,.4,wood,[x,.22,z],stool);
   // A coffee for two: glazed cup, saucer, spoon, and a quietly reserved spot.
   const coffee=new T.Group();coffee.position.set(0,.86,0);sideTable.add(coffee);cylinder(.2,.17,.025,cream,[0,0,0],coffee);cylinder(.105,.075,.18,mat('#b39761'),[0,.105,0],coffee);cylinder(.094,.094,.005,woodDark,[0,.197,0],coffee);
   const coffeeHandle=mesh(new T.TorusGeometry(.067,.014,8,20),gold,coffee);coffeeHandle.position.set(.105,.12,0);
-  const spoon=ball(.031,gold,[.145,.027,.018],[.64,.25,1.3],coffee);tube([[.145,.028,.018],[.145,.028,.15]],.007,gold,coffee);tag(coffee,'coffee','这一杯，也给你留着');
+  const spoon=ball(.031,gold,[.145,.027,.018],[.64,.25,1.3],coffee);tube([[.145,.028,.018],[.145,.028,.15]],.007,gold,coffee);tag(coffee,'coffee','This cup is for you, too');
   const reserved=texturePlane(.34,.19,textTexture(['RESERVED'],512,230,'#d8c69e','#55402d',42),[.23,.88,-.22],sideTable);reserved.rotation.x=-.8;
   const teaFlame=ball(.026,new T.MeshBasicMaterial({color:'#ffd48b'}),[-.26,1.035,.12],[.5,1.7,.5],sideTable);cylinder(.064,.064,.11,cream,[-.26,.9,.12],sideTable);teaFlame.castShadow=false;
   const teaLight=new T.PointLight('#ffb668',1.3,3.5,2);teaLight.position.set(3.27,1.08,-.7);group.add(teaLight);
   // Art on the other wall, with a supplied photo inside a wooden frame.
   const art=new T.Group();art.position.set(4.92,2.86,-.5);art.rotation.y=-Math.PI/2;group.add(art);mesh(roundedSurface(1.13,1.35,.07,.1),gold,art);const artMat=new T.MeshStandardMaterial({color:'#fff',roughness:.8});const artPhoto=mesh(roundedPanel(.96,1.17,.055),artMat,art);artPhoto.position.z=.04;updatePhoto(artMat,4,.96/1.17);tag(art,'portraits','墙上的旅行照片');
   // A small letter appears after the birthday sequence.
-  const letter=new T.Group();letter.position.set(.35,.923,.45);letter.rotation.x=-Math.PI/2;table.add(letter);box(.68,.42,.012,paper,[0,0,0],letter,.015);texturePlane(.59,.34,textTexture(['For You'],512,260,'#e5d7b7','#624936',66),[0,0,.008],letter);letter.visible=false;tag(letter,'letter','再读一遍小屋来信');
+  const letter=new T.Group();letter.position.set(.35,.923,.45);letter.rotation.x=-Math.PI/2;table.add(letter);box(.68,.42,.012,paper,[0,0,0],letter,.015);texturePlane(.59,.34,textTexture(['For You'],512,260,'#e5d7b7','#624936',66),[0,0,.008],letter);letter.visible=false;tag(letter,'letter','Read the birthday letter again');
   const indicatorMaterial=new T.MeshBasicMaterial({color:'#241b0d'});const phoneIndicator=ball(.025,indicatorMaterial,[.31,.25,.22],[1,.6,.45],phone);phoneIndicator.castShadow=false;
   const shelfBulb=box(1.78,.015,.035,new T.MeshBasicMaterial({color:'#a48a59'}),[-3.06,3.79,-2.76],group,.004);shelfBulb.castShadow=false;
   const relightLights={phone:new T.PointLight('#ffc98f',0,2.3,2),books:new T.PointLight('#ffd4a0',0,3,2),sofa:new T.PointLight('#ffcf9b',0,3.5,2),photos:new T.PointLight('#ffe0b2',0,3,2),flowers:new T.PointLight('#ffd8ab',0,3,2),elephant:new T.PointLight('#ffe0b4',0,2.8,2)};
   relightLights.phone.position.set(-3.55,1.6,-.1);relightLights.books.position.set(-3.06,3.62,-2.3);relightLights.sofa.position.set(-.2,2,-1);relightLights.photos.position.set(-1.1,1.7,2.25);relightLights.flowers.position.set(4.2,1.65,.2);relightLights.elephant.position.set(2.5,1.4,.65);Object.values(relightLights).forEach(l=>group.add(l));
   return {group,drawer,drawerStar,interactive,toppers,wallMaterials,art,exterior:{night,building,windowGlow,glass,moonFace,view,clip},pictureBulb,relightLights,phoneIndicator,shelfBulb,teaLight,teaFlame,coffee,chair,savedPrint,books,bookOrigins,bookDust,pillow,pillow2,flowers,mug,steam,tvButtons,tvPlay,tvPause,frameTurner,frameMat,frameBackMat,phone,handset,dial,dialMount,calendar,calendarPivot,calendarMat,calendarLeaf,calendarBack,calendarBase,tvMat,floorLight,deskLight,candleLight,shadeMat,flames,letter,mesh,box,ball,tube,mat,tag,textTexture,updatePhoto,ownedTextures,
-    setFrame(index:number){updatePhoto(frameMat,[0,1][index],.82/1.1);const text=['树下歪歪合影','挤在同一个沙发'][index];const old=frameBackMat.map;frameBackMat.map=textTexture([text.slice(0,12),text.slice(12),'','小屋 ♡'],512,700,'#dac79b','#483424',38);old?.dispose();},
+    setFrame(index:number){updatePhoto(frameMat,[0,1][index],.82/1.1);const text=['Friends Under the Tree','Together on the Sofa'][index];const old=frameBackMat.map;frameBackMat.map=textTexture([text.slice(0,12),text.slice(12),'','Claire ♡'],512,700,'#dac79b','#483424',38);old?.dispose();},
     setCalendar(actual:boolean){calendarPivot.rotation.x=actual?-Math.PI:0;},
     dispose(){disposed=true;group.traverse(obj=>{if(obj instanceof T.Mesh||obj instanceof T.Points||obj instanceof T.LineSegments){obj.geometry.dispose();const materials=Array.isArray(obj.material)?obj.material:[obj.material];materials.forEach(m=>m.dispose());}});ownedTextures.forEach(t=>t.dispose());scene.remove(group);},
   };
