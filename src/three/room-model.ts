@@ -84,7 +84,7 @@ export function createRoomModel(scene:T.Scene){
   const curtain=mat('#cda5a3',.99);curtain.bumpMap=grains.cloth;
   for(const x of [.46,4.45])for(let i=0;i<6;i++)cylinder(.067,.081,2.51,curtain,[x+(i-2.5)*.095,2.8,-3.1]);
   // A woven rug with quiet inset borders, all geometry on the floor.
-  const rug=mat('#718c99',1),rugBorder=mat('#d6be9b',1);
+  const rug=mat('#eee5d5',1),rugBorder=mat('#cdb79b',1);
   slab(6.6,.028,4.9,rug,[0,.053,.65],group,.2);
   for(const x of [-3.08,3.08])box(.07,.007,4.5,rugBorder,[x,.072,.65],group,.001);
   for(const z of [-1.61,2.91])box(6.15,.007,.07,rugBorder,[0,.072,z],group,.001);
@@ -251,7 +251,7 @@ export function createRoomModel(scene:T.Scene){
   const sideTable=new T.Group();sideTable.position.set(3.53,0,-.82);group.add(sideTable);
   cylinder(.5,.5,.11,wood,[0,.79,0],sideTable);cylinder(.065,.11,.7,gold,[0,.38,0],sideTable);cylinder(.31,.37,.065,woodDark,[0,.07,0],sideTable);
   const chair=new T.Group();chair.position.set(3.58,0,1.25);chair.rotation.y=-.55;group.add(chair);
-  const fabric=mat('#596153',1);fabric.bumpMap=grains.cloth;fabric.bumpScale=.024;
+  const fabric=mat('#9ebdcc',1);fabric.bumpMap=grains.cloth;fabric.bumpScale=.024;
   box(1.17,.24,1.16,fabric,[0,.63,0],chair,.14);const chairBack=box(1.15,.96,.25,fabric,[0,1.01,-.5],chair,.16);chairBack.rotation.x=-.1;
   for(const x of [-.59,.59]){box(.17,.15,1.05,wood,[x,.86,-.01],chair,.065);for(const z of [-.43,.43])box(.065,.7,.065,wood,[x,.42,z],chair,.018);}
   tag(chair,'cushion','Take a seat');
