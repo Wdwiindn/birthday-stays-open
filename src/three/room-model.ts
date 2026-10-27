@@ -69,6 +69,25 @@ export function createRoomModel(scene:T.Scene){
   }
   for(const m of wallMaterials){m.bumpScale=.027;m.roughness=1;}
   box(10,.17,.12,woodDark,[0,.12,-3.34]);box(.12,.17,7.85,woodDark,[-4.95,.12,.5]);box(.12,.17,7.85,woodDark,[4.95,.12,.5]);
+  // Lightweight birthday balloon cluster on the back wall. Decorative only.
+  // Individual meshes are easy to recolor, reposition, or remove later.
+  const birthdayBalloons=new T.Group();birthdayBalloons.position.set(-.12,3.18,-3.12);group.add(birthdayBalloons);
+  const balloonColors=['#c78f98','#e6c991','#a4b9c9'];
+  for(const [i,offset] of [[0,[-.39,.03,.01]],[1,[.04,.27,-.01]],[2,[.43,.05,.02]]] as const){
+    const balloonMat=new T.MeshStandardMaterial({color:balloonColors[i],roughness:.43,metalness:.04});
+    const balloon=mesh(new T.SphereGeometry(.245,20,16),balloonMat,birthdayBalloons);
+    balloon.position.set(offset[0],offset[1],offset[2]);balloon.scale.set(.88,1.25,.58);
+    const knot=mesh(new T.ConeGeometry(.055,.11,8),balloonMat,birthdayBalloons);
+    knot.rotation.z=Math.PI;knot.position.set(offset[0],offset[1]-.34,offset[2]);
+    const stringMat=new T.MeshBasicMaterial({color:'#a58a72'});
+    const string=mesh(new T.TubeGeometry(new T.CatmullRomCurve3([
+      new T.Vector3(offset[0],offset[1]-.38,offset[2]),
+      new T.Vector3(offset[0]+.045,offset[1]-.64,offset[2]+.02),
+      new T.Vector3(offset[0]-.025,offset[1]-.92,offset[2]+.02),
+      new T.Vector3(offset[0]+.02,offset[1]-1.12,offset[2]+.02)
+    ]),12,.006,5,false),stringMat,birthdayBalloons);
+    balloon.castShadow=false;knot.castShadow=false;string.castShadow=false;
+  }
   const windowGroup=new T.Group();group.add(windowGroup);
   const windowWood=mat('#211d17',.7);
   box(3.55,.12,.34,windowWood,[2.45,1.82,-3.35],windowGroup);box(3.55,.12,.25,windowWood,[2.45,4.02,-3.35],windowGroup);
