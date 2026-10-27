@@ -216,7 +216,7 @@ export function mountRoom(container:HTMLDivElement,initial:ThreeRoomState,callba
     model.steam.visible=time<mugUntil;model.mug.position.y=T.MathUtils.damp(model.mug.position.y,time<mugUntil?1.14:1.05,5,dt);model.steam.rotation.y=time*.3;
     model.coffee.rotation.y=time<mugUntil?Math.sin(time*2)*.035:0;model.pillow.scale.y=1+(time<cushionUntil?Math.sin((cushionUntil-time)*9)*.09:0);
     model.flowers.forEach((flower,i)=>{flower.blossoms.forEach((b,j)=>{b.rotation.z=Math.cos(j*2.4)*.13+Math.sin(time*2+j)*(time<flowersUntil?.14:.015);});});
-    for(const {id,obj,button} of tvControls){const shown=state.focus==='tv'&&!state.blocked&&!tween;button.style.display=shown?'block':'none';if(shown){const p=obj.getWorldPosition(new T.Vector3()).project(camera);button.style.left=`${(p.x+1)*container.clientWidth/2}px`;button.style.top=`${(1-p.y)*container.clientHeight/2}px`;button.setAttribute('aria-label',id==='tv-pause'?(state.tvPaused?'继续电视轮播':'Pause TV slideshow'):id==='tv-prev'?'Previous TV photo':'Next TV photo');}}
+    for(const {id,obj,button} of tvControls){const shown=state.focus==='tv'&&!state.blocked&&!tween;button.style.display=shown?'block':'none';if(shown){const p=obj.getWorldPosition(new T.Vector3()).project(camera);button.style.left=`${(p.x+1)*container.clientWidth/2}px`;button.style.top=`${(1-p.y)*container.clientHeight/2}px`;button.setAttribute('aria-label',id==='tv-pause'?(state.tvPaused?'Resume TV slideshow':'Pause TV slideshow'):id==='tv-prev'?'Previous TV photo':'Next TV photo');}}
     // Room orbit stays in front. Focus cameras cannot orbit through walls.
 
     // Solid walls keep their depth and shadows at every allowed camera angle.
