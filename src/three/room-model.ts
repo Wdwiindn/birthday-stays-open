@@ -31,7 +31,7 @@ export function createRoomModel(scene:T.Scene){
   const materialCache=new Map<string,T.MeshStandardMaterial>();
   const mat=(color:string,roughness=.72,metalness=0)=>{const key=[color,roughness,metalness].join(':');let value=materialCache.get(key);if(!value){value=new T.MeshStandardMaterial({color,roughness:Math.max(.8,Math.round(roughness*10)/10),metalness:Math.min(.4,metalness),bumpMap:grains.paper,bumpScale:.008});materialCache.set(key,value);}return value;};
   const wood=mat('#603b26',.63),woodDark=mat('#30241b',.72),gold=mat('#b08848',.35,.68),cream=mat('#e5d7b7',.85),black=mat('#161816',.62);
-  const olive=mat('#e9dcc8',.98),leather=mat('#85503c',.96),paper=mat('#e9ddc3',.96);
+  const olive=mat('#e9dcc8',.98),leather=mat('#b78383',.96),paper=mat('#e9ddc3',.96);
   [wood,woodDark].forEach(m=>{m.bumpMap=grains.wood;m.bumpScale=.026;});leather.bumpMap=grains.cloth;leather.bumpScale=.019;
   function mesh(geometry:T.BufferGeometry,material:T.Material,parent:T.Object3D=group){const m=new T.Mesh(geometry,material);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m;}
   function box(w:number,h:number,d:number,material:T.Material,pos:Vec3,parent:T.Object3D=group,r=.03){const m=mesh(r>=.015?new RoundedBoxGeometry(w,h,d,1,Math.min(r,w/3,h/3,d/3)):new T.BoxGeometry(w,h,d),material,parent);m.position.set(...pos);return m;}
@@ -84,7 +84,7 @@ export function createRoomModel(scene:T.Scene){
   const curtain=mat('#cda5a3',.99);curtain.bumpMap=grains.cloth;
   for(const x of [.46,4.45])for(let i=0;i<6;i++)cylinder(.067,.081,2.51,curtain,[x+(i-2.5)*.095,2.8,-3.1]);
   // A woven rug with quiet inset borders, all geometry on the floor.
-  const rug=mat('#553029',1),rugBorder=mat('#95704c',1);
+  const rug=mat('#718c99',1),rugBorder=mat('#d6be9b',1);
   slab(6.6,.028,4.9,rug,[0,.053,.65],group,.2);
   for(const x of [-3.08,3.08])box(.07,.007,4.5,rugBorder,[x,.072,.65],group,.001);
   for(const z of [-1.61,2.91])box(6.15,.007,.07,rugBorder,[0,.072,z],group,.001);
