@@ -66,7 +66,7 @@ export function createAnimals(model:RoomModel){
   const thread=mat('#586c6b',1);
   for(let i=0;i<9;i++){const y=.23+i*.051;tube([[-.014,y,.303],[.012,y+.007,.305]],.0025,thread,elephant);}
   for(const side of [-1,1])for(let i=0;i<8;i++){const a=-1.2+i*.32;tube([[side*.32+Math.cos(a)*.153,.82+Math.sin(a)*.194,.026],[side*.32+Math.cos(a+.055)*.153,.82+Math.sin(a+.055)*.194,.028]],.0024,thread,elephant);}
-  tag(elephant,'elephant','Touch the elephant's trunk');
+  tag(elephant,'elephant',"Touch the elephant's trunk");
   const home=new T.Vector3(2.66,.52,.08),besideCake=new T.Vector3(.93,.93,1.08);
   elephant.position.copy(home);let stage=0,elephantPetUntil=0,journeyStart=-1,arrived=false;
   function pet(id:string,time:number){if(id==='cats')sofa.petUntil=time+3.5;else if(id==='window-cat')window.petUntil=time+3;else if(id==='elephant')elephantPetUntil=time+2.5;}
