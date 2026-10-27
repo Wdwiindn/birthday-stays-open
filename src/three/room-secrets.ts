@@ -5,7 +5,7 @@ import type {RoomModel} from './room-model';
 export function createRoomSecrets(model:RoomModel){
  const {group,box,ball,tube,mat,tag,textTexture}=model;
  const gold=mat('#b69859',.9,.2),cord=mat('#9f9479'),paper=mat('#dfcaa7');
- const charm=new T.Group();charm.position.set(-.8,3.13,-3.35);group.add(charm);tag(charm,'wall-charm','碰一下墙上的星星');
+ const charm=new T.Group();charm.position.set(-.8,3.13,-3.35);group.add(charm);tag(charm,'wall-charm','Touch the star on the wall');
  ball(.032,gold,[0,.39,0],[1,1,.5],charm);tube([[0,.38,0],[0,.16,.015]],.005,cord,charm);
  const ring=new T.Mesh(new T.TorusGeometry(.22,.008,7,48),gold);charm.add(ring);
  const stars:T.Group[]=[];
