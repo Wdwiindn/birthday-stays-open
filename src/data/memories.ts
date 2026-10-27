@@ -2,18 +2,18 @@ export type MemoryKind = 'frames' | 'calls' | 'film' | 'together' | 'portraits' 
 export interface Memory { id:string; episode:string; category:MemoryKind; carrier:'frame'|'polaroid'|'filmstrip'|'contact-sheet'|'tv'; asset:string; alt:string; backText:string; priority:number; }
 export const episodeTitles:Record<MemoryKind,string>={frames:'Friends in the Frame',calls:'Hello?',film:'Little Everyday Moments',together:'Better Together',portraits:'Little Adventures',cats:'Many Cats',sunny:'A Little Sunshine',magic:'A Little Magic',books:'The Bookshelf',calendar:'Today and Tomorrow',tv:'Doodle Cinema',elephant:'Little Elephant'};
 const gallery:[string,MemoryKind,string,string][]=[
- ['01-tree-friends','frames','Two friends under a tree','I'm so lucky to have you by my side.'],
- ['02-sofa-friends','frames','Three friends squeezed onto a sofa','Even ordinary days are fun with you.'],
- ['03-cafe-friends','together','Friends sharing coffee','Here's to many more afternoons of endless conversations.'],
- ['04-picnic','together','A giant orange beside a picnic blanket','May you always find joy in the little things.'],
- ['05-seaside','portraits','A little figure by the sea','Stay brave, stay free, and see the world.'],
- ['06-reading','portraits','Someone reading by a red lamp','Never stop being curious or chasing your dreams.'],
- ['07-jump','portraits','Someone jumping in yellow boots','Never grow too old for a little silliness.'],
- ['08-tulips','film','Pink tulips and a blue cup','May you bloom in your own beautiful way.'],
- ['09-orange-cat','cats','A round orange cat','Rest when you need to. The world can wait.'],
- ['10-many-cats','cats','Five cats cuddled together','May you always be surrounded by love.'],
- ['11-magic-room','magic','Golden stars in a little room','You shine like a star.'],
- ['12-cake','sunny','A tiny cake with one candle','Happy birthday! May all your wishes come true.'],
+ ['01-tree-friends','frames',"Two friends under a tree","I'm so lucky to have you by my side."],
+ ['02-sofa-friends','frames',"Three friends squeezed onto a sofa","Even ordinary days are fun with you."],
+ ['03-cafe-friends','together',"Friends sharing coffee","Here's to many more afternoons of endless conversations."],
+ ['04-picnic','together',"A giant orange beside a picnic blanket","May you always find joy in the little things."],
+ ['05-seaside','portraits',"A little figure by the sea","Stay brave, stay free, and see the world."],
+ ['06-reading','portraits',"Someone reading by a red lamp","Never stop being curious or chasing your dreams."],
+ ['07-jump','portraits',"Someone jumping in yellow boots","Never grow too old for a little silliness."],
+ ['08-tulips','film',"Pink tulips and a blue cup","May you bloom in your own beautiful way."],
+ ['09-orange-cat','cats',"A round orange cat","Rest when you need to. The world can wait."],
+ ['10-many-cats','cats',"Five cats cuddled together","May you always be surrounded by love."],
+ ['11-magic-room','magic',"Golden stars in a little room","You shine like a star."],
+ ['12-cake','sunny',"A tiny cake with one candle","Happy birthday! May all your wishes come true."],
 ];
 export const memories:Memory[]=gallery.map(([file,category,alt,backText],i)=>({id:`doodle-${i+1}`,episode:episodeTitles[category],category,carrier:category==='frames'?'frame':'polaroid',asset:`./memories/${file}.webp`,alt,backText,priority:5}));
 export const photo=(index:number)=>memories[((index-1)%memories.length+memories.length)%memories.length];
