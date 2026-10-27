@@ -45,7 +45,7 @@ export function createAnimals(model:RoomModel){
     const tail=new T.Group();tail.position.set(0,.17,-.27);root.add(tail);
     tube([[0,0,0],[.25,-.07,-.11],[.35,-.105,.1],[.27,-.108,.39],[.11,-.098,.45]],.032,fur,tail);ball(.031,fur,[.11,-.098,.45],[1,1,1],tail);
     for(const side of [-1,1])for(let i=0;i<3;i++)tube([[side*.19,.49-i*.072,-.08],[side*.235,.43-i*.06,.016],[side*.205,.37-i*.045,.055]],.009,stripe,root);
-    tag(root,action,action==='cats'?'摸摸猫':'摸摸窗边的猫');
+    tag(root,action,action==='cats'?'Pet the cat':'Pet the window cat');
     return {root,torso,head,tail,ears,eyes,base:root.position.clone(),petUntil:0};
   }
   const sofa=cat('#c0986d',[1.22,1.085,-1.67],.92,'cats');sofa.root.rotation.y=-.24;
@@ -66,7 +66,7 @@ export function createAnimals(model:RoomModel){
   const thread=mat('#586c6b',1);
   for(let i=0;i<9;i++){const y=.23+i*.051;tube([[-.014,y,.303],[.012,y+.007,.305]],.0025,thread,elephant);}
   for(const side of [-1,1])for(let i=0;i<8;i++){const a=-1.2+i*.32;tube([[side*.32+Math.cos(a)*.153,.82+Math.sin(a)*.194,.026],[side*.32+Math.cos(a+.055)*.153,.82+Math.sin(a+.055)*.194,.028]],.0024,thread,elephant);}
-  tag(elephant,'elephant','碰碰小象的鼻子');
+  tag(elephant,'elephant','Touch the elephant's trunk');
   const home=new T.Vector3(2.66,.52,.08),besideCake=new T.Vector3(.93,.93,1.08);
   elephant.position.copy(home);let stage=0,elephantPetUntil=0,journeyStart=-1,arrived=false;
   function pet(id:string,time:number){if(id==='cats')sofa.petUntil=time+3.5;else if(id==='window-cat')window.petUntil=time+3;else if(id==='elephant')elephantPetUntil=time+2.5;}
