@@ -63,7 +63,7 @@ function CameraSession({ onKept, season }: { onKept: () => void; season: number 
       // A facing switch can keep the same React video element mounted.
       if (video.current) { video.current.srcObject = media; await video.current.play().catch(() => {}); }
     } catch {
-      if (active.current && id === requestId.current) { setStage('ready'); setNote('Maybe next time. The room will be here.'); }
+      if (active.current && id === requestId.current) { setStage('ready'); setNote("Maybe next time. The room will be here."); }
     } finally { if (active.current && id === requestId.current) setBusy(false); }
   }
   async function capture() {
@@ -73,14 +73,14 @@ function CameraSession({ onKept, season }: { onKept: () => void; season: number 
     const canvas = document.createElement('canvas'), size = Math.min(source.videoWidth, source.videoHeight, 1200);
     canvas.width = size; canvas.height = size;
     const context = canvas.getContext('2d');
-    if (!context) { setBusy(false); setNote('That didn't work. Let's try again.'); return; }
+    if (!context) { setBusy(false); setNote("That didn't work. Let's try again."); return; }
     if (facing === 'user') { context.translate(size, 0); context.scale(-1, 1); }
     const crop = Math.min(source.videoWidth, source.videoHeight);
     context.drawImage(source, (source.videoWidth-crop)/2, (source.videoHeight-crop)/2, crop, crop, 0, 0, size, size);
     const blob = await new Promise<Blob | null>(resolve => canvas.toBlob(resolve, 'image/webp', .92));
     if (!active.current) return;
     setBusy(false);
-    if (!blob) { setNote('That didn't work. Let's try again.'); return; }
+    if (!blob) { setNote("That didn't work. Let's try again."); return; }
     stop(); roomAudio.foley('shutter');
     const now = new Date();
     setPhoto({ id: `room-${Date.now()}-${Math.random().toString(36).slice(2,10)}`, createdAt: now.toISOString(), age: 0, blob });
@@ -90,14 +90,14 @@ function CameraSession({ onKept, season }: { onKept: () => void; season: number 
     if (!photo) return;
     setBusy(true);
     try { await saveBirthdayPhoto(photo); if (active.current) { setSaved(true); setNote('Lovely! This memory is staying in the room.'); onKept(); } }
-    catch { if (active.current) setNote('Couldn't save it in the room. Try saving it to your photos.'); }
+    catch { if (active.current) setNote("Couldn't save it in the room. Try saving it to your photos."); }
     finally { if (active.current) setBusy(false); }
   }
   async function remove() {
     if (!photo) return;
     setBusy(true);
     try { if (saved) await deleteBirthdayPhoto(photo.id); if (active.current) { setPhoto(null); setSaved(false); setStage('ready'); setNote('This photo has been deleted.'); onKept(); } }
-    catch { if (active.current) setNote('Couldn't delete the photo. Please try again later.'); }
+    catch { if (active.current) setNote("Couldn't delete the photo. Please try again later."); }
     finally { if (active.current) setBusy(false); }
   }
   async function download() {
@@ -111,7 +111,7 @@ function CameraSession({ onKept, season }: { onKept: () => void; season: number 
     ctx.fillText('A LITTLE DAY',512,1070); ctx.font = '27px Georgia'; ctx.fillText(formatDate(photo.createdAt),512,1140);
     const bridge=(window as unknown as {xhs?:{miniTool?:{writeTempFile:(o:{data:string})=>Promise<{filePath:string}>;saveImageToPhotosAlbum:(o:{filePath:string})=>Promise<unknown>}}}).xhs?.miniTool;
     if(!bridge?.writeTempFile||!bridge?.saveImageToPhotosAlbum){setNote('Your photo is here. You can also take a screenshot.');return;}
-    try{const {filePath}=await bridge.writeTempFile({data:canvas.toDataURL('image/png')});await bridge.saveImageToPhotosAlbum({filePath});setNote('Saved to your photos.');}catch{setNote('Couldn't save to your photos, but the picture is still here.');}
+    try{const {filePath}=await bridge.writeTempFile({data:canvas.toDataURL('image/png')});await bridge.saveImageToPhotosAlbum({filePath});setNote('Saved to your photos.');}catch{setNote("Couldn't save to your photos, but the picture is still here.");}
   }
   return <div className="camera-session">
     {stage === 'ready' && <div className="camera-ready"><Camera size={42} strokeWidth={1} /><h3>Let's capture a memory.</h3><p>The memories are already here.<br />Let's make one for today.</p><button className="text-action" onClick={() => void start()} disabled={busy}>{busy ? 'Getting the camera ready...' : 'Open camera'}</button></div>}
