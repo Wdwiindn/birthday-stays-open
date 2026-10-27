@@ -31,7 +31,7 @@ export function createRoomModel(scene:T.Scene){
   const materialCache=new Map<string,T.MeshStandardMaterial>();
   const mat=(color:string,roughness=.72,metalness=0)=>{const key=[color,roughness,metalness].join(':');let value=materialCache.get(key);if(!value){value=new T.MeshStandardMaterial({color,roughness:Math.max(.8,Math.round(roughness*10)/10),metalness:Math.min(.4,metalness),bumpMap:grains.paper,bumpScale:.008});materialCache.set(key,value);}return value;};
   const wood=mat('#603b26',.63),woodDark=mat('#30241b',.72),gold=mat('#b08848',.35,.68),cream=mat('#e5d7b7',.85),black=mat('#161816',.62);
-  const olive=mat('#3b4439',.98),leather=mat('#85503c',.96),paper=mat('#e9ddc3',.96);
+  const olive=mat('#e9dcc8',.98),leather=mat('#85503c',.96),paper=mat('#e9ddc3',.96);
   [wood,woodDark].forEach(m=>{m.bumpMap=grains.wood;m.bumpScale=.026;});leather.bumpMap=grains.cloth;leather.bumpScale=.019;
   function mesh(geometry:T.BufferGeometry,material:T.Material,parent:T.Object3D=group){const m=new T.Mesh(geometry,material);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m;}
   function box(w:number,h:number,d:number,material:T.Material,pos:Vec3,parent:T.Object3D=group,r=.03){const m=mesh(r>=.015?new RoundedBoxGeometry(w,h,d,1,Math.min(r,w/3,h/3,d/3)):new T.BoxGeometry(w,h,d),material,parent);m.position.set(...pos);return m;}
@@ -56,13 +56,13 @@ export function createRoomModel(scene:T.Scene){
     const item=memories[index],request=(material.userData.request??0)+1;material.userData.request=request;const img=new Image();img.onload=()=>{if(disposed||material.userData.request!==request)return;const canvas=document.createElement('canvas');canvas.width=Math.round(1024*Math.min(1,ratio));canvas.height=Math.round(1024/Math.max(1,ratio));const c=canvas.getContext('2d')!;c.fillStyle=material instanceof T.MeshBasicMaterial?'#181b16':'#ede2ca';c.fillRect(0,0,canvas.width,canvas.height);const scale=Math.min(canvas.width/img.width,canvas.height/img.height);c.drawImage(img,(canvas.width-img.width*scale)/2,(canvas.height-img.height*scale)/2,img.width*scale,img.height*scale);const tex=new T.CanvasTexture(canvas);tex.colorSpace=T.SRGBColorSpace;tex.anisotropy=4;ownedTextures.add(tex);if(material.map){ownedTextures.delete(material.map);material.map.dispose();}material.map=tex;material.needsUpdate=true;};img.src=source||item.asset;
   }
   // A cutaway room with real thickness, skirting, floorboards and a window opening.
-  slab(10.4,.24,8.3,woodDark,[0,-.14,.5],group,.34);
-  for(let i=0;i<16;i++)box(.626,.06,8,mat(i%3===0?'#59402d':i%3===1?'#624733':'#543c2a'),[-4.7+i*.626,.005,.5],group,.012);
+  slab(10.4,.24,8.3,mat('#795b47',.82),[0,-.14,.5],group,.34);
+  for(let i=0;i<16;i++)box(.626,.06,8,mat(i%3===0?'#a98568':i%3===1?'#b18e70':'#9d795e'),[-4.7+i*.626,.005,.5],group,.012);
   const wall=olive.clone();wallMaterials.push(wall);
   const backWall=mesh(roundedSurface(10.16,4.45,.18,.13,[{width:3.45,height:2.2,x:2.45,y:.7,radius:.055}]),wall);backWall.position.set(0,2.22,-3.5);backWall.userData.structural=true;
-  const leftWall=mat('#3c4234',.92),rightWall=mat('#3b4438',.92);wallMaterials.push(leftWall,rightWall);
+  const leftWall=mat('#e4cfc5',.92),rightWall=mat('#d5dfe0',.92);wallMaterials.push(leftWall,rightWall);
   for(const [x,material] of [[-5.06,leftWall],[5.06,rightWall]] as const){const side=mesh(roundedSurface(4.34,4.45,.16,[.25,0,0,.12]),material);side.rotation.y=Math.PI/2;side.position.set(x,2.22,-1.42);side.userData.structural=true;}
-  const trim=mat('#4c5848',.99);trim.bumpScale=.018;
+  const trim=mat('#b69d85',.99);trim.bumpScale=.018;
   for(const y of [.72,3.88]){
     box(5.7,.037,.047,trim,[-2.14,y,-3.38],group,.012);
     for(const x of [-4.96,4.96])box(.046,.037,4.1,trim,[x,y,-1.39],group,.011);
@@ -81,7 +81,7 @@ export function createRoomModel(scene:T.Scene){
   const clip=[new T.Plane(new T.Vector3(1,0,0),-.76),new T.Plane(new T.Vector3(-1,0,0),4.14),new T.Plane(new T.Vector3(0,1,0),-1.84),new T.Plane(new T.Vector3(0,-1,0),4)];
   building.clippingPlanes=clip;windowGlow.clippingPlanes=clip;night.clippingPlanes=clip;
   const moonFace=ball(.16,new T.MeshBasicMaterial({color:'#d6d0b0'}),[3.55,3.57,-4.5],[1,1,.15]);moonFace.castShadow=false;(moonFace.material as T.MeshBasicMaterial).clippingPlanes=clip;
-  const curtain=mat('#8a7658',.99);curtain.bumpMap=grains.cloth;
+  const curtain=mat('#cda5a3',.99);curtain.bumpMap=grains.cloth;
   for(const x of [.46,4.45])for(let i=0;i<6;i++)cylinder(.067,.081,2.51,curtain,[x+(i-2.5)*.095,2.8,-3.1]);
   // A woven rug with quiet inset borders, all geometry on the floor.
   const rug=mat('#553029',1),rugBorder=mat('#95704c',1);
@@ -104,7 +104,7 @@ export function createRoomModel(scene:T.Scene){
   for(const x of [-1.48,0,1.48]){box(1.43,.26,1.4,leather,[x,.94,-1.74],group,.115);const back=box(1.43,1.23,.32,leather,[x,1.53,-2.59],group,.13);back.rotation.x=-.12;for(const xx of [-.3,.3])ball(.037,woodDark,[x+xx,1.5,-2.405],[1,1,.3]);}
   for(const x of [-2.08,2.08])for(const z of [-2.5,-1.35])cylinder(.065,.04,.25,woodDark,[x,.18,z]);
   const pillow=box(.67,.61,.22,mat('#bc8350'),[-1.62,1.37,-2.27],group,.15);pillow.rotation.z=.25;pillow.rotation.x=-.15;
-  const pillow2=box(.58,.55,.2,mat('#414d42'),[1.7,1.35,-2.27],group,.15);pillow2.rotation.z=-.25;
+  const pillow2=box(.58,.55,.2,mat('#9ebdcc'),[1.7,1.35,-2.27],group,.15);pillow2.rotation.z=-.25;
   const piping=mat('#ae7b57',1);
   for(const x of [-1.48,0,1.48])tube([[x-.61,1.064,-2.34],[x+.61,1.064,-2.34],[x+.66,1.064,-1.14],[x-.66,1.064,-1.14],[x-.61,1.064,-2.34]],.009,piping);
   tag(pillow,'cushion','Pat the cushion');tag(pillow2,'cushion','Pat the cushion');
