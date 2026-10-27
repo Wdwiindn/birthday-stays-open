@@ -31,7 +31,7 @@ export function createRoomModel(scene:T.Scene){
   const materialCache=new Map<string,T.MeshStandardMaterial>();
   const mat=(color:string,roughness=.72,metalness=0)=>{const key=[color,roughness,metalness].join(':');let value=materialCache.get(key);if(!value){value=new T.MeshStandardMaterial({color,roughness:Math.max(.8,Math.round(roughness*10)/10),metalness:Math.min(.4,metalness),bumpMap:grains.paper,bumpScale:.008});materialCache.set(key,value);}return value;};
   const wood=mat('#603b26',.63),woodDark=mat('#30241b',.72),gold=mat('#b08848',.35,.68),cream=mat('#e5d7b7',.85),black=mat('#161816',.62);
-  const olive=mat('#e9dcc8',.98),leather=mat('#b78383',.96),paper=mat('#e9ddc3',.96);
+  const olive=mat('#d2bea4',.98),leather=mat('#b78383',.96),paper=mat('#e9ddc3',.96);
   [wood,woodDark].forEach(m=>{m.bumpMap=grains.wood;m.bumpScale=.026;});leather.bumpMap=grains.cloth;leather.bumpScale=.019;
   function mesh(geometry:T.BufferGeometry,material:T.Material,parent:T.Object3D=group){const m=new T.Mesh(geometry,material);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m;}
   function box(w:number,h:number,d:number,material:T.Material,pos:Vec3,parent:T.Object3D=group,r=.03){const m=mesh(r>=.015?new RoundedBoxGeometry(w,h,d,1,Math.min(r,w/3,h/3,d/3)):new T.BoxGeometry(w,h,d),material,parent);m.position.set(...pos);return m;}
