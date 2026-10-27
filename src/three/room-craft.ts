@@ -49,5 +49,5 @@ export function createTulips(t:CraftTools,pos:V3,size=1){
   const flower=new T.Group();flower.position.set(x,h,z);flower.rotation.set(.08*Math.sin(a),a,.13*Math.cos(a));root.add(flower);blossoms.push(flower);
   for(let k=0;k<6;k++){const m=t.mat(n%2?'#d4a296':'#b86360',.96).clone();m.side=T.DoubleSide;const petal=t.mesh(petalGeometry(),m,flower);petal.rotation.y=k*Math.PI*2/3+(k<3?0:Math.PI/3);if(k>=3){petal.scale.set(.84,.93,.84);petal.position.y=.012;}}
  }
- t.tag(root,'tulips','郁金香');return {root,blossoms,vase,soil};
+ t.tag(root,'tulips','Tulips');return {root,blossoms,vase,soil};
 }
