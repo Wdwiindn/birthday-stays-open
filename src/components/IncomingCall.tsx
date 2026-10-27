@@ -20,7 +20,7 @@ export function IncomingCall({phase,seconds,muted,replaying=false,onAnswer,onCon
    <span className="slide-label">Slide to answer<ChevronRight size={16}/><ChevronRight size={16}/></span>
    <div className="answer-slider" role="slider" tabIndex={0} aria-label="Slide to answer the call" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(progress*100)} aria-valuetext={progress>.85?'Connected':'Slide right or press Enter to answer'} onKeyDown={key} onPointerDown={start} onPointerMove={e=>{if(drag.current)move(slideProgress(drag.current.start,e.clientX,drag.current.travel));}} onPointerUp={release} onPointerCancel={()=>{drag.current=null;move(0);}}><Phone size={25}/></div>
   </div>}
-  {phase==='connected'&&<p className="call-caption" role="status">{seconds<3?'Hey Miranda!! Happy birthday!!':seconds<5?'Guess what? I've got a little surprise for you!':"Come on, let's go to our secret little hideaway! I've been waiting for you!"}</p>}
+  {phase==='connected'&&<p className="call-caption" role="status">{seconds<3?'Hey Miranda!! Happy birthday!!':seconds<5?"Guess what? I've got a little surprise for you!":"Come on, let's go to our secret little hideaway! I've been waiting for you!"}</p>}
   {phase==='connected'&&<div className="call-wave" aria-hidden="true">{Array.from({length:9},(_,i)=><i key={i} style={{animationDelay:`${i*-.19}s`}}/>)}</div>}
   {phase==='error'&&<div className="call-recovery"><button onClick={onAnswer}><Phone size={17}/>Try again</button><button onClick={onContinue}>Continue</button></div>}
   {phase==='connected'&&<button className="call-return" onClick={onContinue}>{replaying?'Back to the room':'Explore the room'}</button>}
