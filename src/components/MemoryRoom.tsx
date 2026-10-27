@@ -100,7 +100,7 @@ export function MemoryRoom() {
     const n=window?windowPet:sofaPet;
     if(window)setWindowPet(v=>v+1);else setSofaPet(v=>v+1);
     state.notice(window?'window-cat':'cats');state.discover('cats');roomAudio.foley('cat');setCatOffer(true);
-    const replies=window?['Meow? Come watch the world with me.','Purr... There's room for you by the window.','My tail says: one more pet, please.']:['Prrrr...','Those ears were made for your hand.','That's it. Your hand belongs to the cat now.'];
+    const replies=window?['Meow? Come watch the world with me.','Purr... There's room for you by the window.','My tail says: one more pet, please.']:['Prrrr...','Those ears were made for your hand.',"That's it. Your hand belongs to the cat now."];
     say(replies[n%replies.length]);
   }
   function openObject(id:ObjectId){
@@ -111,7 +111,7 @@ export function MemoryRoom() {
     if(id==='cats'||id==='window-cat'){petCat(id==='window-cat');return;}
     if(id==='elephant'){
       setElephantPet(n=>n+1);state.discover('elephant');roomAudio.foley('pickup');
-      say(state.endingUnlocked&&!state.endingSeen?'Its trunk points toward the cake.':elephantPet%2?'It hides a tiny photo behind its back.':'Touch trunks. It's a promise.');
+      say(state.endingUnlocked&&!state.endingSeen?"Its trunk points toward the cake.":elephantPet%2?'It hides a tiny photo behind its back.':'Touch trunks. It's a promise.');
       return;
     }
     if(id==='cake'){
@@ -137,7 +137,7 @@ export function MemoryRoom() {
   const light=state.lighting;
   function sceneAction(id:string){
     if(!canExplore)return;
-    if(id==='drawer-star'){setCharmPulse(n=>n+1);state.discover('magic');roomAudio.foley('magic');say('A little star that's still awake.');return;}
+    if(id==='drawer-star'){setCharmPulse(n=>n+1);state.discover('magic');roomAudio.foley('magic');say("A little star that's still awake.");return;}
     if(id==='tv-prev'){setTVIndex(i=>(i-1+memories.length)%memories.length);return;}
     if(id==='tv-next'){setTVIndex(i=>advancePhoto(i,memories.length));return;}
     if(id==='tv-pause'){setTVPaused(p=>!p);roomAudio.foley('switch');return;}
