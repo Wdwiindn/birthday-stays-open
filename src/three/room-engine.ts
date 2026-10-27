@@ -26,7 +26,7 @@ export function mountRoom(container:HTMLDivElement,initial:ThreeRoomState,callba
   renderer.setClearColor(0x000000,0);
   renderer.setPixelRatio(1);renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFShadowMap;renderer.localClippingEnabled=true;
   renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.03;renderer.outputColorSpace=T.SRGBColorSpace;
-  renderer.domElement.setAttribute('aria-label','可拖动旋转的三维记忆房间');renderer.domElement.setAttribute('role','img');container.appendChild(renderer.domElement);
+  renderer.domElement.setAttribute('aria-label','Interactive 3D birthday room');renderer.domElement.setAttribute('role','img');container.appendChild(renderer.domElement);
   const camera=new T.PerspectiveCamera(40,1,.05,80);camera.position.set(...HOME_VIEW.position);
   const controls=new OrbitControls(camera,renderer.domElement);controls.target.set(...HOME_VIEW.target);controls.enableDamping=true;controls.dampingFactor=.075;controls.enablePan=false;controls.minDistance=ROOM_ORBIT.minDistance;controls.maxDistance=ROOM_ORBIT.maxDistance;controls.minPolarAngle=ROOM_ORBIT.minPolar;controls.maxPolarAngle=ROOM_ORBIT.maxPolar;controls.minAzimuthAngle=ROOM_ORBIT.minAzimuth;controls.maxAzimuthAngle=ROOM_ORBIT.maxAzimuth;controls.rotateSpeed=.38;controls.zoomSpeed=.65;controls.update();
   const ambient=new T.HemisphereLight('#eadbc0','#40546a',1.05);scene.add(ambient);
@@ -135,11 +135,11 @@ export function mountRoom(container:HTMLDivElement,initial:ThreeRoomState,callba
   function cancel(){pointers.clear();pinching=false;down.at=0;dialDrag=null;model.dial.rotation.z=0;controls.enabled=!state.blocked;}
   function onWheel(){if(tween)controls.enabled=false;}
   renderer.domElement.addEventListener('pointerdown',onDown,true);renderer.domElement.addEventListener('pointermove',onMove);renderer.domElement.addEventListener('pointerup',onUp);renderer.domElement.addEventListener('pointercancel',cancel);renderer.domElement.addEventListener('wheel',onWheel,{passive:true});
-  const tvControls=[...model.tvButtons].map(([id,obj])=>{const button=document.createElement('button');button.className='object-tv-control';button.style.display='none';button.setAttribute('aria-label',id==='tv-prev'?'上一张电视照片':id==='tv-next'?'下一张电视照片':'暂停电视轮播');button.addEventListener('click',()=>callbacks.onObject(id));container.appendChild(button);return {id,obj,button};});
-  function onContextLost(event:Event){event.preventDefault();contextLost=true;cancelAnimationFrame(frame);callbacks.onError('画面暂时休息一下，切换轻量小屋继续逛。');}
-  function onContextRestored(){if(!disposed)callbacks.onError('小屋已切换轻量模式，物件仍然可以探索。');}
+  const tvControls=[...model.tvButtons].map(([id,obj])=>{const button=document.createElement('button');button.className='object-tv-control';button.style.display='none';button.setAttribute('aria-label',id==='tv-prev'?'Previous TV photo':id==='tv-next'?'Next TV photo':'Pause TV slideshow');button.addEventListener('click',()=>callbacks.onObject(id));container.appendChild(button);return {id,obj,button};});
+  function onContextLost(event:Event){event.preventDefault();contextLost=true;cancelAnimationFrame(frame);callbacks.onError('The 3D view needs a break. You can keep exploring in lightweight mode.');}
+  function onContextRestored(){if(!disposed)callbacks.onError('The room is now in lightweight mode. You can still explore.');}
   renderer.domElement.addEventListener('webglcontextrestored',onContextRestored);
-  renderer.debug.onShaderError=()=>{contextLost=true;cancelAnimationFrame(frame);callbacks.onError('这台设备适合轻量小屋，故事都还在。');};
+  renderer.debug.onShaderError=()=>{contextLost=true;cancelAnimationFrame(frame);callbacks.onError('This device works better with the lightweight room. All the stories are still here.');};
   renderer.domElement.addEventListener('webglcontextlost',onContextLost);
   function sync(next:ThreeRoomState){
     if(next.dialRequest!==state.dialRequest&&!dialAnimation)dialAnimation={start:performance.now(),rotation:180};
@@ -216,7 +216,7 @@ export function mountRoom(container:HTMLDivElement,initial:ThreeRoomState,callba
     model.steam.visible=time<mugUntil;model.mug.position.y=T.MathUtils.damp(model.mug.position.y,time<mugUntil?1.14:1.05,5,dt);model.steam.rotation.y=time*.3;
     model.coffee.rotation.y=time<mugUntil?Math.sin(time*2)*.035:0;model.pillow.scale.y=1+(time<cushionUntil?Math.sin((cushionUntil-time)*9)*.09:0);
     model.flowers.forEach((flower,i)=>{flower.blossoms.forEach((b,j)=>{b.rotation.z=Math.cos(j*2.4)*.13+Math.sin(time*2+j)*(time<flowersUntil?.14:.015);});});
-    for(const {id,obj,button} of tvControls){const shown=state.focus==='tv'&&!state.blocked&&!tween;button.style.display=shown?'block':'none';if(shown){const p=obj.getWorldPosition(new T.Vector3()).project(camera);button.style.left=`${(p.x+1)*container.clientWidth/2}px`;button.style.top=`${(1-p.y)*container.clientHeight/2}px`;button.setAttribute('aria-label',id==='tv-pause'?(state.tvPaused?'继续电视轮播':'暂停电视轮播'):id==='tv-prev'?'上一张电视照片':'下一张电视照片');}}
+    for(const {id,obj,button} of tvControls){const shown=state.focus==='tv'&&!state.blocked&&!tween;button.style.display=shown?'block':'none';if(shown){const p=obj.getWorldPosition(new T.Vector3()).project(camera);button.style.left=`${(p.x+1)*container.clientWidth/2}px`;button.style.top=`${(1-p.y)*container.clientHeight/2}px`;button.setAttribute('aria-label',id==='tv-pause'?(state.tvPaused?'继续电视轮播':'Pause TV slideshow'):id==='tv-prev'?'Previous TV photo':'Next TV photo');}}
     // Room orbit stays in front. Focus cameras cannot orbit through walls.
 
     // Solid walls keep their depth and shadows at every allowed camera angle.
@@ -225,7 +225,7 @@ export function mountRoom(container:HTMLDivElement,initial:ThreeRoomState,callba
     if(++warmupFrames>20){sampleFrames++;totalFrameTime+=performance.now()-workStart;
       if(sampleFrames>=75){const mean=totalFrameTime/sampleFrames;container.dataset.frameMs=mean.toFixed(1);
         if(mean>32&&quality===0){quality=1;fastWindows=0;renderer.shadowMap.enabled=false;resize();}
-        else if(quality===1&&mean>65){if(++slowWindows>=2){callbacks.onError('换成轻量小屋，继续摸猫、翻照片和许愿。');cancelAnimationFrame(frame);return;}}
+        else if(quality===1&&mean>65){if(++slowWindows>=2){callbacks.onError('Switching to lightweight mode. You can still pet the cats, browse photos, and make a wish.');cancelAnimationFrame(frame);return;}}
         else if(quality===1&&mean<16){if(++fastWindows>=3){quality=0;fastWindows=0;renderer.shadowMap.enabled=true;resize();}}
         else{fastWindows=0;slowWindows=0;}
         sampleFrames=0;totalFrameTime=0;
