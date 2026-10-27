@@ -4,7 +4,7 @@ import {ArrowLeft,ArrowRight,RotateCcw} from 'lucide-react';
 import {callFragments} from '../data/memories';
 import {shelfBooks,type ShelfBook} from '../data/books';
 import type {FocusKind} from '../data/room';
-const titles: Record<FocusKind,string> = { frames:'Those days, with you.',books:'The Bookshelf',calls:'Hello, Claire's listening',calendar:'Today and Tomorrow',tv:'All the little things.',window:'Outside, the world goes on.',drawer:'A Little Secret in the Drawer' };
+const titles: Record<FocusKind,string> = { frames:'Those days, with you.',books:'The Bookshelf',calls:"Hello, Claire's listening",calendar:'Today and Tomorrow',tv:'All the little things.',window:'Outside, the world goes on.',drawer:'A Little Secret in the Drawer' };
 interface FocusProps {
   kind: FocusKind; onClose: () => void; frameIndex: number; frameFlipped: boolean; onFrameMove: (n:number)=>void; onFrameFlip:()=>void;
   selectedBook: ShelfBook|null; onBookSelect:(id:string)=>void; onDial:()=>void; onBookMemory: (magic:boolean)=>void; callIndex:number;
