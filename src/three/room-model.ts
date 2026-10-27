@@ -79,13 +79,14 @@ export function createRoomModel(scene:T.Scene){
     balloon.position.set(offset[0],offset[1],offset[2]);balloon.scale.set(.88,1.25,.58);
     const knot=mesh(new T.ConeGeometry(.055,.11,8),balloonMat,birthdayBalloons);
     knot.rotation.z=Math.PI;knot.position.set(offset[0],offset[1]-.34,offset[2]);
-    const stringMat=new T.MeshBasicMaterial({color:'#a58a72'});
+    const stringMat=new T.MeshBasicMaterial({color:'#80684f',depthTest:false,depthWrite:false});
     const string=mesh(new T.TubeGeometry(new T.CatmullRomCurve3([
       new T.Vector3(offset[0],offset[1]-.38,offset[2]),
       new T.Vector3(offset[0]+.045,offset[1]-.64,offset[2]+.02),
       new T.Vector3(offset[0]-.025,offset[1]-.92,offset[2]+.02),
       new T.Vector3(offset[0]+.02,offset[1]-1.12,offset[2]+.02)
-    ]),12,.006,5,false),stringMat,birthdayBalloons);
+     ]),12,.009,6,false),stringMat,birthdayBalloons);
+    string.renderOrder=3;
     balloon.castShadow=false;knot.castShadow=false;string.castShadow=false;
   }
   const windowGroup=new T.Group();group.add(windowGroup);
